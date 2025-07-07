@@ -1,0 +1,98 @@
+
+["mining_copper_ore"] = {
+    label = "Copper ore",
+    weight = 1,
+    stack = true,
+    close = true
+},
+
+["mining_iron_ore"] = {
+    label = "Iron ore",
+    weight = 1,
+    stack = true,
+    close = true
+},
+
+["mining_gold_ore"] = {
+    label = "Gold ore",
+    weight = 1,
+    stack = true,
+    close = true
+},
+
+["mining_silver_ore"] = {
+    label = "Silver ore",
+    weight = 1,
+    stack = true,
+    close = true
+},
+
+["mining_steel_ore"] = {
+    label = "Steel Ore",
+    weight = 1,
+    stack = true,
+    close = true
+},
+
+["mining_gold_ingot"] = {
+    label = "Gold Ingot",
+    weight = 1,
+    stack = true,
+    close = true
+},
+
+["mining_iron_ingot"] = {
+    label = "Iron Ingot",
+    weight = 1,
+    stack = true,
+    close = true
+},
+
+["mining_steel_ingot"] = {
+    label = "Steel Ingot",
+    weight = 1,
+    stack = true,
+    close = true
+},
+
+["mining_copper_ingot"] = {
+    label = "Copper Ingot",
+    weight = 1,
+    stack = true,
+    close = true
+},
+
+["gold"] = {
+    label = "Gold",
+    weight = 1,
+    stack = true,
+    close = true
+},
+
+["silver"] = {
+    label = "Silver",
+    weight = 1,
+    stack = true,
+    close = true
+},
+
+["steel"] = {
+    label = "Steel",
+    weight = 1,
+    stack = true,
+    close = true
+},
+
+["iron"] = {
+    label = "Iron",
+    weight = 1,
+    stack = true,
+    close = true
+},
+
+["copper"] = {
+    label = "Copper",
+    weight = 1,
+    stack = true,
+    close = true
+},
