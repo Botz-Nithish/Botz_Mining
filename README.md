@@ -2,6 +2,7 @@
 
 Welcome to **Botz_Mining**, a customizable mining script built for FiveM using **ox_lib**. This resource is built for performance, user interaction, and easy integration into your **ESX-server**.
 If you like this project feel free to put a like! 
+> If you like this project feel free to put a like and a star on my project!!
 > 🔗 GitHub: [Botz-Nithish/Botz_Mining](https://github.com/Botz-Nithish/Botz_Mining)
 
 ---
