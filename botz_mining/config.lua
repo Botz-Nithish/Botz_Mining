@@ -7,7 +7,7 @@ Config = {}
 
 Config.rock_count = 1
 Config.ShowBlips = true -- global toggle for blips
-Config.rewards = {
+Config.rewards = { --These are the rewards for the 1st step that is mining the ores these are based on probability
     {
         item = 'mining_gold_ore',
         probability = 0.20
@@ -27,21 +27,21 @@ Config.rewards = {
     {
         item = 'mining_iron_ore',
         probability = 0.20
-    },
+    },--add more as you want
 }
 
 
-Config.MiningZone = {
+Config.MiningZone = { -- You can add how much ever as you want increase the zoneindex by 1 each time.
     {
         zoneindex = 1,
-        freezepedat = vec4(3021.7681, 2782.5256, 54.0028, 299.1118),
-        targetzone = {
+        freezepedat = vec4(3021.7681, 2782.5256, 54.0028, 299.1118), --The player will freeze at this position this is to ensure that a player cant use 2 zones at a time
+        targetzone = { -- The location  where the zone is located
             coords = vec3(3023.0, 2783.0, 53.65),
             size = vec3(1, 1, 1),
             rotation = 25.0,
         },
         SphereZone = { 
-            {
+            { -- These are the zones where the players should aim! add as much as you want just increement the number by 1
                 number = 1,
                 coords = vec3(3023.9, 2782.6, 54.2),
                 radius = 0.25,
@@ -89,7 +89,7 @@ Config.MiningZone = {
             },
             
         }
-    },
+    }, -- add more!
 }
 
 
@@ -97,12 +97,12 @@ Config.MiningZone = {
 
 
 
-Config.SmeltConversion={
+Config.SmeltConversion={  --This is The 3rd Step From washing -> Smelting
     ['iron'] = {
-        conversion_count=4,
-        converting_to = 'mining_iron_ingot',
-        converting_to_count = 1,
-        desc = 'Testing',
+        conversion_count=4, --How much washed stone needed
+        converting_to = 'mining_iron_ingot', -- The item name of the washed stone
+        converting_to_count = 1, --How much item should be recieved for each conversion_count
+        desc = 'Testing', --BETA i dont think i have used this
     },
     ['steel'] = {
         conversion_count=4,
@@ -127,7 +127,7 @@ Config.SmeltConversion={
         converting_to = 'mining_copper_ingot',
         desc = 'Testing',
         converting_to_count = 1,
-    }
+    }--add more as you want
 }
 
 
@@ -168,7 +168,7 @@ Config.WashingZone = {
     --More can be added just increement the num by 1 each time you put new zone
 }
 
-Config.WashConversion={
+Config.WashConversion={ --Similar to Smelt conversion
     ['mining_iron_ore'] = {
         conversion_count=4,
         converting_to = 'iron',
@@ -201,7 +201,7 @@ Config.WashConversion={
     }
 }
 
-Config.blips = {
+Config.blips = { --These are the Blips for each step
     mining = {
         {
             coords = vector3(2951.28, 2781.91, 40.36),
@@ -211,7 +211,7 @@ Config.blips = {
             scale = 1.1,
             label = "Mining Area",
         },
-        -- Add more mining zones here
+        -- Add more
     },
     smelting = {
         {
@@ -228,7 +228,7 @@ Config.blips = {
             scale = 0.85,
             label = "Smelting Zone 2",
         },
-        -- Add more smelting zones here
+        -- Add more smelting blips here
     },
     washing = {
         {
@@ -238,7 +238,7 @@ Config.blips = {
             scale = 0.85,
             label = "Washing Zone",
         },
-        -- Add more washing zones here
+        -- Add more washing blips here
     }
 }
 
