@@ -1,4 +1,5 @@
-
+local Bridge = exports['community_bridge']:Bridge()
+local items = {
 ["mining_copper_ore"] = {
     label = "Copper ore",
     weight = 1,
@@ -61,6 +62,12 @@
     stack = true,
     close = true
 },
+["mining_silver_ingot"] = {
+    label = "Silver Ingot",
+    weight = 1,
+    stack = true,
+    close = true
+},
 
 ["gold"] = {
     label = "Gold",
@@ -96,3 +103,6 @@
     stack = true,
     close = true
 },
+}
+
+

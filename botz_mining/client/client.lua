@@ -1,3 +1,5 @@
+local Bridge = exports['community_bridge']:Bridge()
+
 mining_zone = {}
 local pickaxeObject 
 local startmining_notif
@@ -6,27 +8,29 @@ local miningSphere
 
 Citizen.CreateThread(function()
     for k, v in pairs(Config.MiningZone) do
-        mining_zone[k] = exports.ox_target:addBoxZone({
-            coords = v.targetzone.coords,
-            size = v.targetzone.size,
-            rotation = v.targetzone.rotation,
-            debug = Config.debug,
-            drawSprite = Config.debug,
-            options = {
+        mining_zone[k] = Bridge.Target.AddBoxZone(
+            "Mining_zone" .. k, -- name
+            v.targetzone.coords, -- vector3
+            v.targetzone.size, -- {x, y, z}
+            v.targetzone.rotation, -- heading
+            { -- options
                 {
                     icon = "fas fa-pickaxe",
-                    label = 'Start Mining'..k,
+                    label = "Start Mining " .. k,
                     distance = 2.0,
-
                     onSelect = function()
-                        print("Selected Zone: ", json.encode(v))
+                        if config.debug then
+                            print("Selected Zone: ",json.encode(v))
+                        end
                         startMining(v)
                     end
                 }
-            }
-        })
+            },
+            Config.debug -- debug
+        )
     end
 end)
+
 
 
 
@@ -39,7 +43,9 @@ end
 
 function DisattachPickaxe()
     if DoesEntityExist(pickaxeObject) then
-        print('entity does exist')
+        if config.debug then
+            print('entity does exist')
+        end
         DetachEntity(pickaxeObject, true, true)
         DeleteEntity(pickaxeObject)
         pickaxeObject = nil
@@ -80,9 +86,11 @@ function playMining(data, miningSphere)
     keybind = lib.addKeybind({
         name = 'respects',
         description = 'press F to pay respects',
-        defaultKey = "MOUSE_LEFT",
+        defaultKey = "E",
         onPressed = function(self)
-            print(('pressed %s (%s)'):format(self.currentKey, self.name))
+            if config.debug then
+                print(('pressed %s (%s)'):format(self.currentKey, self.name))
+            end
         end,
         onReleased = function(self)
             ToggleKeybind(false)
@@ -128,7 +136,9 @@ RegisterCommand("cancelmining", function()
             car = true,
         },
     }) then 
-        print('Cancelling Mining')
+        if config.debug then
+            print('Cancelling Mining')
+        end
         DisattachPickaxe()    
         local playerPed = PlayerPedId()
         ClearPedTasksImmediately(playerPed)
@@ -275,4 +285,72 @@ CreateThread(function()
             end,
         })
     end
+end)
+
+
+SellShop = function()
+    lib.RequestModel(Config.Sell_Ped.model)
+    Sell_Ped = CreatePed(0, Config.Sell_Ped.model, Config.Sell_Ped.location, Config.Sell_Ped.heading, false, true)
+    FreezeEntityPosition(Sell_Ped, true)
+    SetBlockingOfNonTemporaryEvents(Sell_Ped, true)
+    SetEntityInvincible(Sell_Ped, true)
+    TaskStartScenarioInPlace(Sell_Ped, Config.Sell_Ped.scenario, 0, true) 
+end
+
+local function onEnterped(self)
+    SellShop()
+    exports.ox_target:addLocalEntity(Sell_Ped, {
+        name = 'oilrig_trigger_ped',
+        icon = self.target_icon,
+        label = self.target_label,
+        distance = 2,
+        canInteract = function(entity, coords, distance)
+            return IsPedOnFoot(cache.ped) and not IsPlayerDead(cache.ped)
+        end,
+        onSelect = function()
+            TriggerEvent('botz_mining:openSellMenu') 
+        end
+    })
+end
+
+
+
+local function onExitped(self)
+    DeleteEntity(Sell_Ped)
+    exports.ox_target:removeLocalEntity(Sell_Ped, nil)
+end
+ 
+local points = lib.points.new({
+    coords = Config.Sell_Ped.location,
+    heading = Config.Sell_Ped.heading,
+    distance = Config.Sell_Ped.distance,
+    model = Config.Sell_Ped.model,
+    scenario = Config.Sell_Ped.scenario,
+    target_label = Config.Sell_Ped.target_label,
+	target_icon = Config.Sell_Ped.target_icon,
+    onEnter = onEnterped,
+    onExit = onExitped,
+})
+
+RegisterNetEvent('botz_mining:openSellMenu', function()
+    local sellOptions = {}
+
+    for itemName, price  in pairs(Config.Sell_Shop) do
+        local itemInfo = Bridge.Inventory.GetItemInfo(itemName)
+        table.insert(sellOptions,{
+            title = ('Sell %s'):format(itemInfo.label),
+            description = ('Sell for $%s'):format(price),
+            icon = 'dollar-sign',
+            onSelect = function()
+                TriggerServerEvent('botz_mining:sellItem', itemName)
+            end
+        })
+    end
+    lib.registerContext({
+        id = 'sell_menu',
+        title = 'Sell Items',
+        options = sellOptions
+    })
+
+    lib.showContext('sell_menu')
 end)

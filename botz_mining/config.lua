@@ -7,7 +7,8 @@ Config = {}
 
 Config.rock_count = 1
 Config.ShowBlips = true -- global toggle for blips
-Config.rewards = { --These are the rewards for the 1st step that is mining the ores these are based on probability
+Config.Debug = true
+Config.rewards = {
     {
         item = 'mining_gold_ore',
         probability = 0.20
@@ -27,21 +28,21 @@ Config.rewards = { --These are the rewards for the 1st step that is mining the o
     {
         item = 'mining_iron_ore',
         probability = 0.20
-    },--add more as you want
+    },
 }
 
 
-Config.MiningZone = { -- You can add how much ever as you want increase the zoneindex by 1 each time.
+Config.MiningZone = {
     {
         zoneindex = 1,
-        freezepedat = vec4(3021.7681, 2782.5256, 54.0028, 299.1118), --The player will freeze at this position this is to ensure that a player cant use 2 zones at a time
-        targetzone = { -- The location  where the zone is located
+        freezepedat = vec4(3021.7681, 2782.5256, 54.0028, 299.1118),
+        targetzone = {
             coords = vec3(3023.0, 2783.0, 53.65),
             size = vec3(1, 1, 1),
             rotation = 25.0,
         },
         SphereZone = { 
-            { -- These are the zones where the players should aim! add as much as you want just increement the number by 1
+            {
                 number = 1,
                 coords = vec3(3023.9, 2782.6, 54.2),
                 radius = 0.25,
@@ -89,7 +90,7 @@ Config.MiningZone = { -- You can add how much ever as you want increase the zone
             },
             
         }
-    }, -- add more!
+    },
 }
 
 
@@ -97,37 +98,43 @@ Config.MiningZone = { -- You can add how much ever as you want increase the zone
 
 
 
-Config.SmeltConversion={  --This is The 3rd Step From washing -> Smelting
+Config.SmeltConversion={
     ['iron'] = {
-        conversion_count=4, --How much washed stone needed
-        converting_to = 'mining_iron_ingot', -- The item name of the washed stone
-        converting_to_count = 1, --How much item should be recieved for each conversion_count
-        desc = 'Testing', --BETA i dont think i have used this
+        conversion_count=4,
+        converting_to = 'mining_iron_ingot',
+        converting_to_count = 1,
+        input_label = 'Irone Ore',
+        output_label = 'Iron Ingot'
     },
     ['steel'] = {
         conversion_count=4,
         converting_to = 'mining_steel_ingot',
         converting_to_count = 1,
-        desc = 'Testing',
+        input_label = 'Steel Ore',
+        output_label = 'Steel Ingot'
     },
     ['gold'] = {
         conversion_count=4,
         converting_to = 'mining_gold_ingot',
         converting_to_count = 1,
         desc = 'Testing',
+        input_label = 'Gold Ore',
+        output_label = 'Gold Ingot'
     },
     ['silver'] = {
         conversion_count=4,
         converting_to = 'mining_silver_ingot',
         converting_to_count = 1,
-        desc = 'Testing',
+        input_label = 'Silver Ore',
+        output_label = 'Silver Ingot'
     },
     ['copper'] = {
         conversion_count=4,
         converting_to = 'mining_copper_ingot',
         desc = 'Testing',
-        converting_to_count = 1,
-    }--add more as you want
+        input_label = 'Copper Ore',
+        output_label = 'Copper Ingot'
+    }
 }
 
 
@@ -168,40 +175,46 @@ Config.WashingZone = {
     --More can be added just increement the num by 1 each time you put new zone
 }
 
-Config.WashConversion={ --Similar to Smelt conversion
+Config.WashConversion={
     ['mining_iron_ore'] = {
         conversion_count=4,
         converting_to = 'iron',
         converting_to_count = 1,
-        desc = 'Testing',
+        input_label = 'Iron Ore',
+        output_label = 'Iron Ingot',
     },
     ['mining_steel_ore'] = {
         conversion_count=4,
         converting_to = 'steel',
         converting_to_count = 1,
-        desc = 'Testing',
+        input_label = 'Steel Ore',
+        output_label = 'Steel Ingot',
     },
     ['mining_gold_ore'] = {
         conversion_count=4,
         converting_to = 'gold',
         converting_to_count = 1,
-        desc = 'Testing',
+        input_label = 'Gold Ore',
+        output_label = 'Gold Ingot',
     },
     ['mining_silver_ore'] = {
         conversion_count=4,
         converting_to = 'silver',
         converting_to_count = 1,
-        desc = 'Testing',
+        input_label = 'Silver Ore',
+        output_label = 'Silver Ingot',
+
     },
     ['mining_copper_ore'] = {
         conversion_count=4,
         converting_to = 'copper',
-        desc = 'Testing',
         converting_to_count = 1,
+        input_label = 'Copper Ore',
+        output_label = 'Copper Ingot',
     }
 }
 
-Config.blips = { --These are the Blips for each step
+Config.blips = {
     mining = {
         {
             coords = vector3(2951.28, 2781.91, 40.36),
@@ -211,7 +224,7 @@ Config.blips = { --These are the Blips for each step
             scale = 1.1,
             label = "Mining Area",
         },
-        -- Add more
+        -- Add more mining zones here
     },
     smelting = {
         {
@@ -228,7 +241,7 @@ Config.blips = { --These are the Blips for each step
             scale = 0.85,
             label = "Smelting Zone 2",
         },
-        -- Add more smelting blips here
+        -- Add more smelting zones here
     },
     washing = {
         {
@@ -238,7 +251,7 @@ Config.blips = { --These are the Blips for each step
             scale = 0.85,
             label = "Washing Zone",
         },
-        -- Add more washing blips here
+        -- Add more washing zones here
     }
 }
 
@@ -249,4 +262,23 @@ Config.ShowBlip_Zone = {
         radius = 267.0,
     },
     
+}
+
+
+Config.Sell_Ped = {
+    model = 's_m_m_highsec_01',
+    scenario = 'WORLD_HUMAN_SMOKING',
+    location = vector3(2957.9939, 2746.0371, 43.5224 -1 ),
+    heading =  48.6694,
+    distance = 40.0,
+    target_label = 'Sell your Ingots!',
+	target_icon = 'fa-solid fa-comments-dollar'
+}
+
+Config.Sell_Shop = {
+    ["mining_gold_ingot"] = 10000,
+    ["mining_silver_ingot"] = 15000,
+    ["mining_iron_ingot"] = 10000,
+    ["mining_copper_ingot"] = 15000,
+    ["mining_steel_ingot"] = 10000,
 }

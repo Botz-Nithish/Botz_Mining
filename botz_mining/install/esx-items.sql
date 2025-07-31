@@ -1,0 +1,16 @@
+INSERT INTO `items` (`name`, `label`, `weight`, `rare`, `can_remove`) VALUES
+('mining_copper_ore', 'Copper ore', 1, 0, 1),
+('mining_iron_ore', 'Iron ore', 1, 0, 1),
+('mining_gold_ore', 'Gold ore', 1, 0, 1),
+('mining_silver_ore', 'Silver ore', 1, 0, 1),
+('mining_steel_ore', 'Steel Ore', 1, 0, 1),
+('mining_gold_ingot', 'Gold Ingot', 1, 0, 1),
+('mining_iron_ingot', 'Iron Ingot', 1, 0, 1),
+('mining_steel_ingot', 'Steel Ingot', 1, 0, 1),
+('mining_copper_ingot', 'Copper Ingot', 1, 0, 1),
+('mining_silver_ingot', 'Silver Ingot', 1, 0, 1),
+('gold', 'Gold', 1, 0, 1),
+('silver', 'Silver', 1, 0, 1),
+('steel', 'Steel', 1, 0, 1),
+('iron', 'Iron', 1, 0, 1),
+('copper', 'Copper', 1, 0, 1);

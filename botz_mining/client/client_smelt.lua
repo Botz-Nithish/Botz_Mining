@@ -1,17 +1,18 @@
 local washing = false
-ESX = exports["es_extended"]:getSharedObject()
+local Bridge = exports['community_bridge']:Bridge()
 
 -- Register ox_target zones
 CreateThread(function()
     for _, data in pairs(Config.SmeltingZone) do
         local zoneData = data.zone
-        exports.ox_target:addBoxZone({
-            coords = zoneData.coords,
-            size = zoneData.size,
-            rotation = zoneData.rotation,
-            debug = Config.debug,
-            drawSprite = Config.debug,
-            options = {
+        Bridge.Target.AddBoxZone(
+            'smelt_menu_' .. data.num,
+            zoneData.coords,
+            zoneData.size,
+            zoneData.rotation,
+            Config.debug,
+            Config.debug,
+            {
                 {
                     name = 'smelt_menu_' .. data.num,
                     icon = 'fa-solid fa-fire',
@@ -21,25 +22,26 @@ CreateThread(function()
                     end,
                 },
             },
-        })
+        )
     end
 end)
 
 -- Open dynamic ox_lib context menu
 function OpenSmeltContext()
     local options = {}
-    local items = exports.ox_inventory:Items()
 
     for itemName, data in pairs(Config.SmeltConversion) do
-        local inputItem = items[itemName]
-        local outputItem = items[data.converting_to]
-
-        local inputLabel = inputItem and inputItem.label or itemName
-        local outputLabel = outputItem and outputItem.label or data.converting_to
+        local inputLabel = data.input_label or itemName
+        local outputLabel = data.output_label or data.converting_to
 
         table.insert(options, {
             title = "Smelt " .. inputLabel,
-            description = ("Convert %dx %s to %dx %s"):format(data.conversion_count, inputLabel, data.converting_to_count, outputLabel),
+            description = ("Convert %dx %s to %dx %s"):format(
+                data.conversion_count,
+                inputLabel,
+                data.converting_to_count,
+                outputLabel
+            ),
             icon = "fa-solid fa-recycle",
             onSelect = function()
                 TriggerServerEvent("botz_mining:smelt_start", itemName)

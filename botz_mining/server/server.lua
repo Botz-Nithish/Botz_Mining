@@ -1,5 +1,5 @@
-ESX = exports["es_extended"]:getSharedObject()
-
+-- ESX = exports["es_extended"]:getSharedObject()
+local Bridge = exports['community_bridge']:Bridge()
 
 
 lib.callback.register('botz_mining:minedrock', function(source)
@@ -18,8 +18,11 @@ lib.callback.register('botz_mining:minedrock', function(source)
     if not selectedItem then
         selectedItem = 'rock' 
     end
-
-    local success, response = exports.ox_inventory:AddItem(source, selectedItem, Config.rock_count)
+    if Config.debug then
+        print('printing ITem:' .. selectedItem .. ' Rock: ' .. Config.rock_count)
+    end
+    
+    local success = Bridge.Inventory.AddItem(source, selectedItem, Config.rock_count)
     if success then
         return 0
     else
@@ -27,27 +30,27 @@ lib.callback.register('botz_mining:minedrock', function(source)
     end
 end)
 
-ESX.RegisterServerCallback('smelting:getInventory', function(source, cb)
-    local xPlayer = ESX.GetPlayerFromId(source)
-    cb(xPlayer.getInventory())
-end)
+-- ESX.RegisterServerCallback('smelting:getInventory', function(source, cb)
+--     local xPlayer = ESX.GetPlayerFromId(source)
+--     cb(xPlayer.getInventory())
+-- end)
 
 RegisterServerEvent("botz_mining:smelt_start", function(item)
     local src = source
-    local items = exports.ox_inventory:Items()
     local data = Config.SmeltConversion[item]
     if not data then return end
 
-    local inputLabel = items[item] and items[item].label or item
-    local outputLabel = items[data.converting_to] and items[data.converting_to].label or data.converting_to
+    -- Use labels from config
+    local inputLabel = data.input_label or item
+    local outputLabel = data.output_label or data.converting_to
 
-    local hasItem = exports.ox_inventory:Search(src, 'count', item)
+    local hasItem =  Bridge.Inventory.GetItemCount(source, item)
     if hasItem < data.conversion_count then
         TriggerClientEvent("botz_mining:smelt_notify", src, "Not enough " .. inputLabel, "error")
         return
     end
 
-    local removed = exports.ox_inventory:RemoveItem(src, item, data.conversion_count)
+    local removed = Bridge.Inventory.RemoveItem(src, item, data.conversion_count)
     if not removed then
         TriggerClientEvent("botz_mining:smelt_notify", src, "Failed to remove " .. inputLabel, "error")
         return
@@ -57,7 +60,7 @@ RegisterServerEvent("botz_mining:smelt_start", function(item)
 
     Wait(5000)
 
-    local added = exports.ox_inventory:AddItem(src, data.converting_to, data.converting_to_count)
+    local added = Bridge.Inventory.AddItem(src, data.converting_to, data.converting_to_count)
     if not added then
         TriggerClientEvent("botz_mining:smelt_notify", src, "Failed to add " .. outputLabel, "error")
         return
@@ -67,22 +70,22 @@ RegisterServerEvent("botz_mining:smelt_start", function(item)
 end)
 
 
+
 RegisterServerEvent("botz_mining:washing_start", function(item)
     local src = source
-    local items = exports.ox_inventory:Items()
     local data = Config.WashConversion[item]
     if not data then return end
 
-    local inputLabel = items[item] and items[item].label or item
-    local outputLabel = items[data.converting_to] and items[data.converting_to].label or data.converting_to
-    local hasItem = exports.ox_inventory:Search(src, 'count', item)
+    local inputLabel = data.input_label or item
+    local outputLabel = data.output_label or data.converting_to
 
+    local hasItem =  Bridge.Inventory.GetItemCount(source, item)
     if hasItem < data.conversion_count then
         TriggerClientEvent("botz_mining:washing_notify", src, "Not enough " .. inputLabel, "error")
         return
     end
 
-    local removed = exports.ox_inventory:RemoveItem(src, item, data.conversion_count)
+    local removed = Bridge.Inventory.RemoveItem(src, item, data.conversion_count)
     if not removed then
         TriggerClientEvent("botz_mining:washing_notify", src, "Failed to remove items", "error")
         return
@@ -92,11 +95,36 @@ RegisterServerEvent("botz_mining:washing_start", function(item)
 
     Wait(5000)
 
-    local added = exports.ox_inventory:AddItem(src, data.converting_to, data.converting_to_count)
+    local added = exports.Bridge.Inventory.AddItem(src, data.converting_to, data.converting_to_count)
     if not added then
         TriggerClientEvent("botz_mining:washing_notify", src, "Failed to add " .. outputLabel, "error")
         return
     end
 
     TriggerClientEvent("botz_mining:washing_notify", src, "Received " .. data.converting_to_count .. "x " .. outputLabel, "success")
+end)
+
+
+RegisterServerEvent('botz_mining:sellItem', function(itemName)
+    local src = source
+    local xPlayer = Bridge.Framework.GetPlayerIdentifier(src)
+    local itemAmount = Bridge.Inventory.GetItemCount(source, itemName)
+    if not Config.Sell_Shop[itemName] then return end
+    if not itemAmount or itemAmount == 0 then
+        TriggerClientEvent('ox_lib:notify', src, {
+            title = 'Sell Failed',
+            description = 'You don’t have any ' .. itemName,
+            type = 'error'
+        })
+        return
+    end
+
+    local price = Config.Sell_Shop[itemName] * itemAmount
+    Bridge.Inventory.RemoveItem(src, itemName, itemAmount)
+    Bridge.Framework.AddAccountBalance(src, "cash", price)
+    TriggerClientEvent('ox_lib:notify', src, {
+        title = 'Items Sold',
+        description = ('You sold %d %s for $%d'):format(itemAmount, itemName, price),
+        type = 'success'
+    })
 end)
