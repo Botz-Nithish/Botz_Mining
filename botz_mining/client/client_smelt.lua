@@ -21,7 +21,7 @@ CreateThread(function()
                         OpenSmeltContext()
                     end,
                 },
-            },
+            }
         )
     end
 end)

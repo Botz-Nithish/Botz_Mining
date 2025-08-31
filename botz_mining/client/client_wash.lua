@@ -20,7 +20,7 @@ CreateThread(function()
                         OpenWashingContext()
                     end,
                 },
-            },
+            }
         )
     end
 end)
