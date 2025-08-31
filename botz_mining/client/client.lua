@@ -19,7 +19,7 @@ Citizen.CreateThread(function()
                     label = "Start Mining " .. k,
                     distance = 2.0,
                     onSelect = function()
-                        if config.debug then
+                        if Config.debug then
                             print("Selected Zone: ",json.encode(v))
                         end
                         startMining(v)
@@ -43,7 +43,7 @@ end
 
 function DisattachPickaxe()
     if DoesEntityExist(pickaxeObject) then
-        if config.debug then
+        if Config.debug then
             print('entity does exist')
         end
         DetachEntity(pickaxeObject, true, true)
@@ -88,7 +88,7 @@ function playMining(data, miningSphere)
         description = 'press F to pay respects',
         defaultKey = "E",
         onPressed = function(self)
-            if config.debug then
+            if Config.debug then
                 print(('pressed %s (%s)'):format(self.currentKey, self.name))
             end
         end,
@@ -136,7 +136,7 @@ RegisterCommand("cancelmining", function()
             car = true,
         },
     }) then 
-        if config.debug then
+        if Config.debug then
             print('Cancelling Mining')
         end
         DisattachPickaxe()    
