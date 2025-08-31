@@ -10,7 +10,6 @@ CreateThread(function()
             zoneData.coords,
             zoneData.size,
             zoneData.rotation,
-            Config.debug,
             {
                 {
                     name = 'wash_menu_' .. data.num,
@@ -20,7 +19,8 @@ CreateThread(function()
                         OpenWashingContext()
                     end,
                 },
-            }
+            },
+            Config.debug
         )
     end
 end)

@@ -10,8 +10,6 @@ CreateThread(function()
             zoneData.coords,
             zoneData.size,
             zoneData.rotation,
-            Config.debug,
-            Config.debug,
             {
                 {
                     name = 'smelt_menu_' .. data.num,
@@ -21,7 +19,8 @@ CreateThread(function()
                         OpenSmeltContext()
                     end,
                 },
-            }
+            },
+            Config.debug
         )
     end
 end)
