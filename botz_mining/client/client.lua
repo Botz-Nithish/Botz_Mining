@@ -85,7 +85,7 @@ end
 function playMining(data, miningSphere)
     keybind = lib.addKeybind({
         name = 'respects',
-        description = 'press F to pay respects',
+        description = 'The Keybind set for Mining!',
         defaultKey = "E",
         onPressed = function(self)
             if Config.debug then
